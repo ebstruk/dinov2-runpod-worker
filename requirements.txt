@@ -4,4 +4,6 @@ torchvision>=0.15.0
 Pillow>=10.0.0
 httpx>=0.25.0
 numpy
-brotli
+aiohttp[speedups]
+Brotli
+brotlicffi
