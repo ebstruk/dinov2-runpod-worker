@@ -52,7 +52,9 @@ def handler(job):
     try:
         # Get image from URL or base64
         if "image_url" in job_input:
-            response = httpx.get(job_input["image_url"], timeout=30, follow_redirects=True)
+            # Disable Accept-Encoding to avoid Brotli issues
+            headers = {"Accept-Encoding": "gzip, deflate"}
+            response = httpx.get(job_input["image_url"], timeout=30, follow_redirects=True, headers=headers)
             response.raise_for_status()
             image_bytes = response.content
         elif "image_base64" in job_input:
