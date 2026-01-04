@@ -2,6 +2,9 @@ FROM pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
 
 WORKDIR /app
 
+# Set torch cache to persist model
+ENV TORCH_HOME=/app/.cache/torch
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -10,6 +13,9 @@ RUN apt-get update && apt-get install -y \
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Create cache directory
+RUN mkdir -p /app/.cache/torch
 
 # Pre-download DINOv2 model during build (faster cold starts)
 RUN python -c "import torch; torch.hub.load('facebookresearch/dinov2', 'dinov2_vitl14', pretrained=True)"
